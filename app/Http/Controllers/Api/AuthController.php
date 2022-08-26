@@ -60,4 +60,9 @@ class AuthController extends Controller
 
         return $this->apiTokenService->issueToken($request);
     }
+
+    public function login(Request $request)
+    {
+        return $this->apiTokenService->issueToken($request);
+    }
 }
