@@ -9,14 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
-/**
- * @OA\Info(title="Autenticación", version="1.0")
- * @OA\SecurityScheme(
- *      securityScheme="bearerAuth",
- *      type="http",
- *      scheme="bearer",
- * ),
- */
 class AuthController extends Controller
 {
     private $apiTokenService;
