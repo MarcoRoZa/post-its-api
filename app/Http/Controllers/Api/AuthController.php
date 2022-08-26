@@ -11,6 +11,11 @@ use Illuminate\Support\Facades\Hash;
 
 /**
  * @OA\Info(title="Autenticación", version="1.0")
+ * @OA\SecurityScheme(
+ *      securityScheme="bearerAuth",
+ *      type="http",
+ *      scheme="bearer",
+ * ),
  */
 class AuthController extends Controller
 {
@@ -93,6 +98,17 @@ class AuthController extends Controller
         return $this->apiTokenService->issueToken($request);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/logout",
+     *      summary="Cerrar sesión un usuario autenticado.",
+     *      @OA\Response(
+     *          response=200,
+     *          description="Retorna vacío."
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     * )
+     */
     public function logout(Request $request)
     {
         $accessToken = $request->user()->token();
