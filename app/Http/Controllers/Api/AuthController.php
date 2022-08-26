@@ -22,6 +22,7 @@ class AuthController extends Controller
      * @OA\Post(
      *      path="/api/register",
      *      summary="Registrar un usuario",
+     *      tags={"authentication"},
      *      @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="application/json",
@@ -63,6 +64,7 @@ class AuthController extends Controller
      * @OA\Post(
      *      path="/api/login",
      *      summary="Iniciar sesión un usuario.",
+     *      tags={"authentication"},
      *      @OA\RequestBody(
      *          @OA\MediaType(
      *              mediaType="application/json",
@@ -94,6 +96,7 @@ class AuthController extends Controller
      * @OA\Post(
      *      path="/api/logout",
      *      summary="Cerrar sesión un usuario autenticado.",
+     *      tags={"authentication"},
      *      @OA\Response(
      *          response=200,
      *          description="Retorna vacío."
