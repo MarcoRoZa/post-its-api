@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Passport\Passport;
 use Tests\TestCase;
 
 class AuthenticationTest extends TestCase
@@ -30,6 +31,20 @@ class AuthenticationTest extends TestCase
             'email' => "marco@test.com",
             'password' => "123456",
         ]);
+
+        $response->assertOk();
+    }
+
+    public function testAUserCanBeLoggedOut()
+    {
+        $user = factory(User::class)->create([
+            'email' => "marco@test.com",
+            'password' => Hash::make("123456"),
+        ]);
+
+        Passport::actingAs($user);
+
+        $response = $this->postJson('/api/logout');
 
         $response->assertOk();
     }
