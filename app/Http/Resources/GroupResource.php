@@ -4,6 +4,26 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *      schema="Group",
+ *      @OA\Property(
+ *          type="string",
+ *          description="UUID del grupo.",
+ *          property="uuid",
+ *      ),
+ *      @OA\Property(
+ *          type="string",
+ *          description="Nombre del grupo.",
+ *          property="name",
+ *      ),
+ *      @OA\Property(
+ *          type="string",
+ *          description="Descripción del grupo.",
+ *          property="description",
+ *      ),
+ * )
+ */
 class GroupResource extends JsonResource
 {
     /**

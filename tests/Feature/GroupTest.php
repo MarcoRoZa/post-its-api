@@ -16,6 +16,6 @@ class GroupTest extends TestCase
         $response = $this->getJson('/api/groups');
 
         $response->assertOk();
-        $response->assertJsonCount(Group::all()->count(), 'data');
+        $response->assertJsonCount(Group::all()->count());
     }
 }
