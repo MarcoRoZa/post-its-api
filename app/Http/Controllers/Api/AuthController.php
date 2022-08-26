@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ApiTokenService;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 /**
@@ -90,5 +91,18 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         return $this->apiTokenService->issueToken($request);
+    }
+
+    public function logout(Request $request)
+    {
+        $accessToken = $request->user()->token();
+
+        DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update(['revoked' => true]);
+
+        $accessToken->revoke();
+
+        return response()->json();
     }
 }
