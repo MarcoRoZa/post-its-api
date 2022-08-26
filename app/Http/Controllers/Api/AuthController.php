@@ -61,6 +61,32 @@ class AuthController extends Controller
         return $this->apiTokenService->issueToken($request);
     }
 
+    /**
+     * @OA\Post(
+     *      path="/api/login",
+     *      summary="Iniciar sesión un usuario.",
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="email",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="password",
+     *                      type="string"
+     *                  ),
+     *                  example={"email": "marco@test.com", "password": "123456"}
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Retorna el token generado."
+     *      ),
+     * )
+     */
     public function login(Request $request)
     {
         return $this->apiTokenService->issueToken($request);
