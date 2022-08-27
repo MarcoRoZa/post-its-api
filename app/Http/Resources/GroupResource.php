@@ -22,6 +22,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="Descripción del grupo.",
  *          property="description",
  *      ),
+ *      @OA\Property(
+ *          type="array",
+ *          description="Lista de notas cuando está unido al grupo.",
+ *          property="notes",
+ *          @OA\Items(ref="#/components/schemas/Note"),
+ *      ),
  * )
  */
 class GroupResource extends JsonResource

@@ -31,6 +31,28 @@ class GroupController extends Controller
         return GroupResource::collection(Group::all());
     }
 
+    /**
+     * @OA\Get (
+     *      path="/api/groups/{uuid}/join",
+     *      summary="Unirse a un grupo existente.",
+     *      tags={"groups"},
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="UUID del grupo a unirse.",
+     *          required=true,
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Retorna el grupo y su contenido.",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              ref="#/components/schemas/Group",
+     *          ),
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     * )
+     */
     public function join(Request $request, Group $group)
     {
         GroupUser::query()->firstOrCreate([
