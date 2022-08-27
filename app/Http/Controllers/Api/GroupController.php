@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\GroupResource;
 use App\Models\Group;
+use App\Models\GroupUser;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
@@ -27,5 +29,15 @@ class GroupController extends Controller
     public function index()
     {
         return GroupResource::collection(Group::all());
+    }
+
+    public function join(Request $request, Group $group)
+    {
+        GroupUser::query()->firstOrCreate([
+            'group_id' => $group->id,
+            'user_id' => $request->user()->id,
+        ]);
+
+        return new GroupResource($group);
     }
 }

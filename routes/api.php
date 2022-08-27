@@ -20,5 +20,8 @@ Route::post('/login', 'Api\AuthController@login');
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', 'Api\AuthController@logout');
 
-    Route::apiResource('groups', 'Api\GroupController')->only(['index']);
+    Route::prefix('/groups')->group(function () {
+        Route::get('/', 'Api\GroupController@index');
+        Route::get('/{group:uuid}/join', 'Api\GroupController@join');
+    });
 });

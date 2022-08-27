@@ -34,10 +34,15 @@ class GroupResource extends JsonResource
      */
     public function toArray($request)
     {
+        $user = $request->user();
+
         return [
             'uuid' => $this->uuid,
             'name' => $this->name,
             'description' => $this->description,
+            'notes' => $this->when($user && $this->contains($user), function () {
+                return NoteResource::collection($this->notes);
+            }),
         ];
     }
 }
