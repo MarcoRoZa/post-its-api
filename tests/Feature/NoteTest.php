@@ -4,8 +4,10 @@ namespace Tests\Feature;
 
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Notifications\NoteCreation;
 use App\User;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
@@ -24,6 +26,8 @@ class NoteTest extends TestCase
             'user_id' => $user->id,
         ]);
 
+        Notification::fake();
+
         $response = $this->post("/api/groups/{$group->uuid}/notes", [
             'title' => "Mi título",
             'description' => "Descripción de una nota.",
@@ -31,6 +35,7 @@ class NoteTest extends TestCase
 
         $response->assertCreated();
         $response->assertJsonStructure(['title', 'description']);
+        Notification::assertSentTo($group->users, NoteCreation::class);
     }
 
     public function testAUserCanCreateNoteAttachingImages()
