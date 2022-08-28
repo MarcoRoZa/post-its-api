@@ -12,6 +12,16 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="ID de la nota.",
  *          property="id",
  *      ),
+ *      @OA\Property(
+ *          type="string",
+ *          description="Título de la nota.",
+ *          property="title",
+ *      ),
+ *      @OA\Property(
+ *          type="string",
+ *          description="Descripción de la nota.",
+ *          property="description",
+ *      ),
  * )
  */
 class NoteResource extends JsonResource

@@ -10,6 +10,52 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NoteController extends Controller
 {
+    /**
+     * @OA\Post (
+     *      path="/api/groups/{uuid}/notes",
+     *      summary="Crear una nota.",
+     *      tags={"notes"},
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="UUID del grupo.",
+     *          required=true,
+     *      ),
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="application/json",
+     *              @OA\Schema(
+     *                  @OA\Property(
+     *                      property="title",
+     *                      type="string"
+     *                  ),
+     *                  @OA\Property(
+     *                      property="description",
+     *                      type="string"
+     *                  ),
+     *                  example={"title": "Mi nota", "description": "La descripción de mi nota."}
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Retorna la nota creada.",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              ref="#/components/schemas/Note",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Creación no permitida.",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Grupo no encontrado.",
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     * )
+     */
     public function store(Request $request, Group $group)
     {
         $user = $request->user();
