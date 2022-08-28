@@ -38,6 +38,7 @@ class NoteResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'files' => FileResource::collection($this->files),
         ];
     }
 }

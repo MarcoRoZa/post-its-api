@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NoteResource;
 use App\Models\Group;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 class NoteController extends Controller
@@ -60,13 +63,35 @@ class NoteController extends Controller
     {
         $user = $request->user();
         if ($group->contains($user)) {
-            $note = $user->notes()->create([
-                'group_id' => $group->id,
-                'title' => $request->title,
-                'description' => $request->description,
-            ]);
+            try {
+                DB::beginTransaction();
 
-            return new NoteResource($note);
+                $note = $user->notes()->create([
+                    'group_id' => $group->id,
+                    'title' => $request->title,
+                    'description' => $request->description,
+                ]);
+
+                if ($request->images) {
+                    foreach ($request->images as $upload) {
+                        $image = $note->files()->create([
+                            'hash' => $upload->hashName(),
+                            'name' => $upload->getClientOriginalName(),
+                        ]);
+
+                        Storage::disk()->put($image->path(), file_get_contents($upload));
+                    }
+                }
+
+                DB::commit();
+
+                return new NoteResource($note);
+            }
+            catch (Exception $exception) {
+                DB::rollBack();
+
+                return response()->json([], Response::HTTP_BAD_REQUEST);
+            }
         }
 
         return response()->json([], Response::HTTP_FORBIDDEN);
