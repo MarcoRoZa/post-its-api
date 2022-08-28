@@ -26,17 +26,23 @@ class NoteController extends Controller
      *      ),
      *      @OA\RequestBody(
      *          @OA\MediaType(
-     *              mediaType="application/json",
+     *              mediaType="multipart/form-data",
      *              @OA\Schema(
      *                  @OA\Property(
      *                      property="title",
-     *                      type="string"
+     *                      type="string",
+     *                      default="Mi título",
      *                  ),
      *                  @OA\Property(
      *                      property="description",
-     *                      type="string"
+     *                      type="string",
+     *                      default="Mi descriptión",
      *                  ),
-     *                  example={"title": "Mi nota", "description": "La descripción de mi nota."}
+     *                  @OA\Property(
+     *                      property="images[]",
+     *                      type="array",
+     *                      @OA\Items(type="file", format="binary")
+     *                  ),
      *              )
      *          )
      *      ),
@@ -74,12 +80,14 @@ class NoteController extends Controller
 
                 if ($request->images) {
                     foreach ($request->images as $upload) {
-                        $image = $note->files()->create([
-                            'hash' => $upload->hashName(),
-                            'name' => $upload->getClientOriginalName(),
-                        ]);
+                        if ($upload) {
+                            $image = $note->files()->create([
+                                'hash' => $upload->hashName(),
+                                'name' => $upload->getClientOriginalName(),
+                            ]);
 
-                        Storage::disk()->put($image->path(), file_get_contents($upload));
+                            Storage::disk()->put($image->path(), file_get_contents($upload));
+                        }
                     }
                 }
 
