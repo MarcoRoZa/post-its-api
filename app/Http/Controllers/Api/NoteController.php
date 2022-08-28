@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\NoteResource;
 use App\Models\Group;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NoteController extends Controller
 {
+    public function index(Request $request, Group $group)
+    {
+        $notes = $group->notes();
+        if ($request->minDate) $notes->whereDate('created_at', '>=', Carbon::parse($request->minDate . " 00:00:00"));
+        if ($request->maxDate) $notes->whereDate('created_at', '<=', Carbon::parse($request->maxDate . " 23:59:59"));
+
+        return NoteResource::collection($notes->get());
+    }
+
     /**
      * @OA\Post (
      *      path="/api/groups/{uuid}/notes",

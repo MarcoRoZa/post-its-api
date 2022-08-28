@@ -39,6 +39,7 @@ class NoteResource extends JsonResource
             'title' => $this->title,
             'description' => $this->description,
             'files' => FileResource::collection($this->files),
+            'created' => $this->created_at->format('Y-m-d H:i'),
         ];
     }
 }

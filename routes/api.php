@@ -26,5 +26,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{group:uuid}/join', 'Api\GroupController@join');
 
         Route::post('/{group:uuid}/notes', 'Api\NoteController@store');
+        Route::get('/{group:uuid}/notes', 'Api\NoteController@index');
     });
 });
