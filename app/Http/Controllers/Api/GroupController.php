@@ -31,6 +31,28 @@ class GroupController extends Controller
         return GroupResource::collection(Group::all());
     }
 
+    /**
+     * @OA\Get (
+     *      path="/api/groups/{uuid}",
+     *      summary="Ver el contenido de un grupo.",
+     *      tags={"groups"},
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="UUID del grupo.",
+     *          required=true,
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Retorna el grupo y su contenido.",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              ref="#/components/schemas/Group",
+     *          ),
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     * )
+     */
     public function show(Group $group)
     {
         return new GroupResource($group);
