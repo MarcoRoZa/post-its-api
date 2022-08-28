@@ -37,6 +37,12 @@ class NoteController extends Controller
      *          description="Fecha máxima de creación.",
      *          example="2022-08-29",
      *      ),
+     *      @OA\Parameter(
+     *          name="images",
+     *          in="query",
+     *          description="Sólo incluir imágenes.",
+     *          example="yes",
+     *      ),
      *      @OA\Response(
      *          response=201,
      *          description="Retorna la lista de notas filtradas.",
