@@ -57,6 +57,7 @@ class NoteController extends Controller
         $notes = $group->notes();
         if ($request->minDate) $notes->whereDate('created_at', '>=', Carbon::parse($request->minDate . " 00:00:00"));
         if ($request->maxDate) $notes->whereDate('created_at', '<=', Carbon::parse($request->maxDate . " 23:59:59"));
+        if ($request->images === 'yes') $notes->whereHas('files');
 
         return NoteResource::collection($notes->get());
     }
