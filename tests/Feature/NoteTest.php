@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\File;
 use App\Models\Group;
 use App\Models\GroupUser;
 use App\Models\Note;
@@ -103,5 +104,35 @@ class NoteTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonCount(5);
+    }
+
+    public function testAUserCanSeeNotesOnlyWithImagesAttached()
+    {
+        $user = factory(User::class)->create();
+        Passport::actingAs($user);
+
+        $group = factory(Group::class)->create();
+
+        GroupUser::query()->firstOrCreate([
+            'group_id' => $group->id,
+            'user_id' => $user->id,
+        ]);
+
+        factory(Note::class, 2)->create([
+            'user_id' => $user->id,
+            'group_id' => $group->id,
+        ]);
+
+        $group->notes()->create(factory(Note::class)->make()->toArray())
+            ->files()
+            ->createMany(factory(File::class, 3)->make()->toArray());
+
+        $response = $this->json('GET', "/api/groups/$group->uuid/notes", [
+            'images' => 'yes',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonCount(1);
+        $response->assertJsonCount(3, '0.files');
     }
 }
