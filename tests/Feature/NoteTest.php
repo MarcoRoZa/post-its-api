@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Group;
 use App\Models\GroupUser;
+use App\Models\Note;
 use App\Notifications\NoteCreation;
 use App\User;
 use Illuminate\Http\UploadedFile;
@@ -67,5 +68,40 @@ class NoteTest extends TestCase
         $response->assertJsonCount(2, 'files');
         Storage::disk()->assertExists("files/" . $images[0]->hashName());
         Storage::disk()->assertExists("files/" . $images[1]->hashName());
+    }
+
+    public function testAUserCanSeeFilteredNotesByCreationDate()
+    {
+        $user = factory(User::class)->create();
+        Passport::actingAs($user);
+
+        $group = factory(Group::class)->create();
+
+        GroupUser::query()->firstOrCreate([
+            'group_id' => $group->id,
+            'user_id' => $user->id,
+        ]);
+
+        $dateSlots = [
+            '2022-06-28',
+            '2022-07-28',
+            '2022-08-28',
+        ];
+
+        foreach ($dateSlots as $dateSlot) {
+            factory(Note::class, 5)->create([
+                'user_id' => $user->id,
+                'group_id' => $group->id,
+                'created_at' => $dateSlot,
+            ]);
+        }
+
+        $response = $this->json('GET', "/api/groups/$group->uuid/notes", [
+            'minDate' => '2022-07-01',
+            'maxDate' => '2022-07-31',
+        ]);
+
+        $response->assertOk();
+        $response->assertJsonCount(5);
     }
 }
