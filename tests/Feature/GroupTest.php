@@ -33,4 +33,28 @@ class GroupTest extends TestCase
         $response->assertJsonStructure(['notes']);
         $this->assertNotEmpty(GroupUser::query()->where('user_id', $user->id)->where('group_id', $group->id)->get());
     }
+
+    public function testAUserCanSeeNotesOfAJoinedGroup()
+    {
+        $user = factory(User::class)->create();
+        Passport::actingAs($user);
+
+        $group = factory(Group::class)->create();
+
+        GroupUser::query()->firstOrCreate([
+            'group_id' => $group->id,
+            'user_id' => $user->id,
+        ]);
+
+        $user->notes()->create([
+            'group_id' => $group->id,
+            'title' => "Title",
+            'description' => "Description",
+        ]);
+
+        $response = $this->getJson("/api/groups/$group->uuid");
+
+        $response->assertOk();
+        $response->assertJsonCount(1, 'notes');
+    }
 }
