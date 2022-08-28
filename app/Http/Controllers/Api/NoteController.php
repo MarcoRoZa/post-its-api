@@ -14,6 +14,44 @@ use Symfony\Component\HttpFoundation\Response;
 
 class NoteController extends Controller
 {
+    /**
+     * @OA\Get(
+     *      path="/api/groups/{uuid}/notes",
+     *      summary="Listar notas.",
+     *      tags={"notes"},
+     *      @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="UUID del grupo.",
+     *          required=true,
+     *      ),
+     *      @OA\Parameter(
+     *          name="minDate",
+     *          in="query",
+     *          description="Fecha mínima de creación.",
+     *          example="2022-08-29",
+     *      ),
+     *      @OA\Parameter(
+     *          name="maxDate",
+     *          in="query",
+     *          description="Fecha máxima de creación.",
+     *          example="2022-08-29",
+     *      ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="Retorna la lista de notas filtradas.",
+     *          @OA\JsonContent(
+     *              type="array",
+     *              @OA\Items(ref="#/components/schemas/Note"),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Grupo no encontrado.",
+     *      ),
+     *      security={{"bearerAuth":{}}},
+     * )
+     */
     public function index(Request $request, Group $group)
     {
         $notes = $group->notes();
