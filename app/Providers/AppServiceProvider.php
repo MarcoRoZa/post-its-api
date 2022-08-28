@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Note;
+use App\Observers\NoteObserver;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,5 +27,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         JsonResource::withoutWrapping();
+
+        Note::observe(NoteObserver::class);
     }
 }
