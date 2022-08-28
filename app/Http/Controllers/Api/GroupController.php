@@ -31,6 +31,11 @@ class GroupController extends Controller
         return GroupResource::collection(Group::all());
     }
 
+    public function show(Group $group)
+    {
+        return new GroupResource($group);
+    }
+
     /**
      * @OA\Get (
      *      path="/api/groups/{uuid}/join",
