@@ -4,16 +4,12 @@ namespace Tests\Feature;
 
 use App\Models\Group;
 use App\Models\GroupUser;
-use App\User;
-use Laravel\Passport\Passport;
-use Tests\TestCase;
+use Tests\AuthTestCase;
 
-class GroupTest extends TestCase
+class GroupTest extends AuthTestCase
 {
     public function testAUserCanSeeExistingGroups()
     {
-        Passport::actingAs(factory(User::class)->create());
-
         $response = $this->getJson('/api/groups');
 
         $response->assertOk();
@@ -22,31 +18,25 @@ class GroupTest extends TestCase
 
     public function testAUserCanJoinToExistingGroup()
     {
-        $user = factory(User::class)->create();
-        Passport::actingAs($user);
-
         $group = Group::query()->firstOrFail();
 
         $response = $this->getJson("/api/groups/$group->uuid/join");
 
         $response->assertOk();
         $response->assertJsonStructure(['notes']);
-        $this->assertNotEmpty(GroupUser::query()->where('user_id', $user->id)->where('group_id', $group->id)->get());
+        $this->assertNotEmpty(GroupUser::query()->where('user_id', $this->authUser->id)->where('group_id', $group->id)->get());
     }
 
     public function testAUserCanSeeNotesOfAJoinedGroup()
     {
-        $user = factory(User::class)->create();
-        Passport::actingAs($user);
-
         $group = factory(Group::class)->create();
 
         GroupUser::query()->firstOrCreate([
             'group_id' => $group->id,
-            'user_id' => $user->id,
+            'user_id' => $this->authUser->id,
         ]);
 
-        $user->notes()->create([
+        $this->authUser->notes()->create([
             'group_id' => $group->id,
             'title' => "Title",
             'description' => "Description",
