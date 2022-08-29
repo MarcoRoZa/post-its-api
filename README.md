@@ -2,7 +2,7 @@
 
 ## Instalación
 
-Ejecute los siguiente comandos para instalar el proyecto:
+Ejecute los siguientes comandos para instalar el proyecto:
 
 ```
 git clone https://github.com/MarcoRoZa/post-its-api.git post-its
@@ -12,7 +12,7 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Cree una base de datos en MySQL llamada <b>post-its</b> usando: <b>character set: utf8mb4</b>, <b>collation: utf8mb4_unicode_ci</b>, y configure los valores en el archivo <em>.env</em>:
+Cree una base de datos en MySQL llamada <b>post-its</b> usando: <b>character set = utf8mb4</b>, <b>collation = utf8mb4_unicode_ci</b>, y configure los valores en el archivo <em>.env</em>:
 
 ```
 DB_DATABASE=
