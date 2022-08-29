@@ -91,7 +91,7 @@ class NoteController extends Controller
      *                  @OA\Property(
      *                      property="description",
      *                      type="string",
-     *                      default="Mi descriptión",
+     *                      default="Mi descripción",
      *                  ),
      *                  @OA\Property(
      *                      property="images[]",
