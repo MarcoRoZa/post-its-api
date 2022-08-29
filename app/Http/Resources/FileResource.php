@@ -4,6 +4,21 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @OA\Schema(
+ *      schema="File",
+ *      @OA\Property(
+ *          type="string",
+ *          description="URL de la imagen.",
+ *          property="url",
+ *      ),
+ *      @OA\Property(
+ *          type="string",
+ *          description="Nombre de la imagen.",
+ *          property="name",
+ *      ),
+ * )
+ */
 class FileResource extends JsonResource
 {
     /**

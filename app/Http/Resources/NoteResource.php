@@ -23,6 +23,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          property="description",
  *      ),
  *      @OA\Property(
+ *          type="array",
+ *          description="Lista de imágenes de la nota.",
+ *          property="files",
+ *          @OA\Items(ref="#/components/schemas/File"),
+ *      ),
+ *      @OA\Property(
  *          type="string",
  *          description="Fecha de creación de la nota.",
  *          property="created",
