@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Note;
 use App\Observers\NoteObserver;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -29,5 +30,7 @@ class AppServiceProvider extends ServiceProvider
         JsonResource::withoutWrapping();
 
         Note::observe(NoteObserver::class);
+
+        if (!$this->app->isLocal()) URL::forceScheme('https');
     }
 }
