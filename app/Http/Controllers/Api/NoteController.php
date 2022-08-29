@@ -60,7 +60,7 @@ class NoteController extends Controller
      */
     public function index(Request $request, Group $group)
     {
-        $notes = $group->notes();
+        $notes = $group->notes()->with(['files']);
         if ($request->minDate) $notes->whereDate('created_at', '>=', Carbon::parse($request->minDate . " 00:00:00"));
         if ($request->maxDate) $notes->whereDate('created_at', '<=', Carbon::parse($request->maxDate . " 23:59:59"));
         if ($request->images === 'yes') $notes->whereHas('files');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Note;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -37,6 +38,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class NoteResource extends JsonResource
 {
+    public function __construct(Note $note)
+    {
+        parent::__construct($note);
+
+        $note->loadMissing(['files']);
+    }
+
     /**
      * Transform the resource into an array.
      *

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Group;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -32,6 +33,13 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class GroupResource extends JsonResource
 {
+    public function __construct(Group $group)
+    {
+        parent::__construct($group);
+
+        $group->loadMissing(['notes.files', 'users']);
+    }
+
     /**
      * Transform the resource into an array.
      *
